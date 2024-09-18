@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    width: 800px;
+    height: 400px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.left {
+    width: 50%;
+    background-color: white;
+    padding: 40px;
+}
+
+.right {
+    width: 50%;
+    background-color: #ffd700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right img {
+    width: 150px;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.checkbox input {
+    margin-right: 10px;
+}
+
+.forgot-password {
+    color: #00aaff;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ffd700;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #e5c100;
+}
+
+.visitor-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.visitor-mode img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.visitor-mode a {
+    color: #00aaff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.visitor-mode a:hover {
+    text-decoration: underline;
+}
+
+.signup {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.signup a {
+    color: #00aaff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.signup a:hover {
+    text-decoration: underline;
+}
+
+a { 
+    margin-left: 10px;
+}
+
+/* Preloader */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff; /* Fundo branco ou qualquer cor */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Garante que ele esteja sobre o conteúdo */
+}
+
+#preloader #logo {
+    width: 150px; /* Tamanho da logo no preloader */
+}
+
+/* Oculta o container até o preloader desaparecer */
+.container {
+    display: none; /* Escondido até o preloader sumir */
+}
+
+.left, .right {
+    flex: 1;
+    padding: 20px;
+}
+
+.left h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    margin-top: 20px;
+}
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória 6x3</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <header>
+        <div id="timer">Tempo: 00:00</div>
+    </header>
+    <div id="game-board" class="game-board"></div>
+
+    <!-- Modal que será exibido ao vencer o jogo -->
+    <div id="win-modal" class="modal">
+        <div class="modal-content">
+            <h2>Parabéns! Você completou o jogo!</h2>
+            <button id="menu-btn">Voltar ao Menu Principal</button>
+            <button id="ranking-btn">Ver Ranking</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
