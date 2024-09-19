@@ -36,7 +36,7 @@ function loadRanking() {
 
 // Botão para voltar ao menu principal
 backBtn.addEventListener('click', () => {
-    window.location.href = '../index/index.html';
+    window.location.href = '../../../index.html';
 });
 
 // Carrega o ranking ao carregar a página

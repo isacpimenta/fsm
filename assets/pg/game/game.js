@@ -26,7 +26,7 @@ function getQueryParam(param) {
 function startGame() {
     theme = getQueryParam('theme');
     if (!theme) {
-        window.location.href = 'index.html'; // Redireciona de volta se não houver tema
+        window.location.href = '../../../index.html'; // Redireciona de volta se não houver tema
     } else {
         createBoard(); // Cria o tabuleiro
     }
@@ -53,8 +53,12 @@ function createBoard() {
 
 function loadImages() {
     const themeImages = {
-        'grego': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'nordico': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
+        'AMOREMITOLOGIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'PREHISTORIAEIDADEANTIGA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADEMÉDIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADEMODERNA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'SOCIEDADEDECONSUMO': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'AMORESLIQUIDOS': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
     };
 
     const images = themeImages[theme];
@@ -165,7 +169,7 @@ function showWinModal() {
 
 // Event listeners para os botões do modal
 menuBtn.addEventListener('click', () => {
-    window.location.href = '../index/index.html'; // Redireciona para o menu principal
+    window.location.href = '../../../index.html'; // Redireciona para o menu principal
 });
 
 rankingBtn.addEventListener('click', () => {
