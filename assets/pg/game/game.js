@@ -78,9 +78,10 @@ function loadImages() {
         imagePaths.push(`../../img/${normalizedTheme}/${image}.png`, `../../img/${normalizedTheme}/${image}.png`);
     });
 
+    console.log('Imagens carregadas:', imagePaths);
+
     imagePaths.sort(() => Math.random() - 0.5);
 }
-
 
 function flipCard() {
     if (lockBoard || this === firstCard || this.classList.contains('flipped')) return;
@@ -134,9 +135,26 @@ function startTimer() {
         const minutes = Math.floor(elapsedTime / 60000);
         const seconds = Math.floor((elapsedTime % 60000) / 1000);
 
+        // Atualiza o temporizador na tela
         timerElement.textContent = `Tempo: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }, 1000);
+
+        // Verifica se o tempo passou de 25 segundos
+        if (elapsedTime >= 25000) { // 25000 ms = 25 segundos
+            endGame(); // Função que encerra o jogo
+        }
+    }, 1000); // Atualiza a cada segundo
 }
+
+
+// Função para encerrar o jogo quando o tempo limite for atingido
+function endGame() {
+    clearInterval(timerInterval); // Para o temporizador
+    lockBoard = true; // Impede mais interações com o tabuleiro
+    alert('O tempo acabou! O jogo foi encerrado após 25 segundos.'); // Mensagem de fim de jogo
+    
+    window.location.href = '../../../index.html';
+}
+
 
 function resetTimer() {
     startTime = null;

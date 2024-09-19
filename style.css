@@ -118,6 +118,12 @@ body {
     cursor: pointer;
 }
 
+.tema {
+    background-color: #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}   
+
 .hidden {
     display: none;
 }
