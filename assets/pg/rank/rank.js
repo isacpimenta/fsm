@@ -13,6 +13,7 @@ function loadRanking() {
     const table = document.createElement('table');
     const header = `
         <tr>
+            <th>Nome</th>
             <th>Tema</th>
             <th>Pontos</th>
             <th>Tempo</th>
@@ -23,6 +24,7 @@ function loadRanking() {
     scores.forEach(score => {
         const row = `
             <tr>
+                <td>${score.nome}</td>
                 <td>${score.theme}</td>
                 <td>${score.points}</td>
                 <td>${score.time}</td>

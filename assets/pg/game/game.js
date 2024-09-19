@@ -1,13 +1,18 @@
 const board = document.getElementById('game-board');
 const timerElement = document.getElementById('timer');
-const modal = document.getElementById('win-modal'); // Modal de vitória
-const menuBtn = document.getElementById('menu-btn'); // Botão para voltar ao menu
-const rankingBtn = document.getElementById('ranking-btn'); // Botão para ver ranking
+const modal = document.getElementById('win-modal');
+const Startmodal = document.getElementById('start-modal');
+const menuBtn = document.getElementById('menu-btn');
+const rankingBtn = document.getElementById('ranking-btn');
+const submitBtn = document.getElementsByClassName('btn')[0]; // Acessa o primeiro botão da classe 'btn'
+
+var form = document.getElementById('formulario');
+var campo = document.getElementById('ipname');
 
 const numRows = 4;
 const numCols = 3;
 const numPairs = (numRows * numCols) / 2;
-const basePoints = 10; // Pontos base por completar o jogo
+const basePoints = 10;
 
 let theme = '';
 let imagePaths = [];
@@ -26,59 +31,63 @@ function getQueryParam(param) {
 function startGame() {
     theme = getQueryParam('theme');
     if (!theme) {
-        window.location.href = '../../../index.html'; // Redireciona de volta se não houver tema
+        window.location.href = '../../../index.html'; 
     } else {
-        createBoard(); // Cria o tabuleiro
+        showStartModal();
     }
 }
 
 function createBoard() {
-    board.innerHTML = ''; // Limpa o tabuleiro
-    matchedPairs = 0; // Zera o contador de pares combinados
-    startTime = null; // Reseta o tempo inicial
-    clearInterval(timerInterval); // Reseta o temporizador
-    timerElement.textContent = 'Tempo: 00:00'; // Reseta a exibição do tempo
+    board.innerHTML = '';
+    matchedPairs = 0;
+    resetTimer();
 
-    loadImages(); // Carrega as imagens com base no tema selecionado
-    for (let i = 0; i < numRows; i++) {
-        for (let j = 0; j < numCols; j++) {
-            const card = document.createElement('div');
-            card.classList.add('card');
-            card.dataset.image = imagePaths[i * numCols + j];
-            card.addEventListener('click', flipCard);
-            board.appendChild(card);
-        }
-    }
+    loadImages();
+    imagePaths.forEach((image, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.image = image;
+        card.addEventListener('click', flipCard);
+        board.appendChild(card);
+    });
 }
 
 function loadImages() {
     const themeImages = {
-        'AMOREMITOLOGIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'PREHISTORIAEIDADEANTIGA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'IDADEMÉDIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'IDADEMODERNA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'SOCIEDADEDECONSUMO': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'AMORESLIQUIDOS': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
+        'AMOR E MITOLOGIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'PRE-HISTORIA E IDADE ANTIGA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADE MÉDIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADE MODERNA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'SOCIEDADE DE CONSUMO': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'AMORES LIQUIDOS': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
     };
 
-    const images = themeImages[theme];
+    // Normaliza o nome do tema removendo espaços e acentos
+    const normalizedTheme = theme
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s/g, "");
+
+    const images = themeImages[theme] || [];
+
     imagePaths = [];
 
-    if (images) {
-        images.forEach(image => {
-            imagePaths.push(`../../img/${theme}/${image}.png`, `../../img/${theme}/${image}.png`);
-        });
+    images.forEach(image => {
+        // Aqui usamos o tema normalizado para construir o caminho das imagens
+        imagePaths.push(`../../img/${normalizedTheme}/${image}.png`, `../../img/${normalizedTheme}/${image}.png`);
+    });
 
-        imagePaths.sort(() => Math.random() - 0.5); // Aleatoriza as imagens
-    }
+    imagePaths.sort(() => Math.random() - 0.5);
 }
+
 
 function flipCard() {
     if (lockBoard || this === firstCard || this.classList.contains('flipped')) return;
 
     if (!startTime) {
-        startTime = Date.now(); // Inicia o temporizador ao virar a primeira carta
-        startTimer(); // Começa a contagem
+        startTime = Date.now(); 
+        startTimer();
     }
 
     this.classList.add('flipped');
@@ -98,10 +107,10 @@ function checkForMatch() {
         matchedPairs++;
         resetBoard();
         if (matchedPairs === numPairs) {
-            clearInterval(timerInterval); // Para o temporizador quando todas as cartas forem combinadas
-            const totalTime = Date.now() - startTime; // Calcula o tempo total
-            calculatePoints(totalTime); // Calcula a pontuação com base no tempo
-            showWinModal(); // Exibe o modal ao vencer
+            clearInterval(timerInterval);
+            const totalTime = Date.now() - startTime;
+            calculatePoints(totalTime);
+            showWinModal();
         }
     } else {
         setTimeout(() => {
@@ -119,25 +128,43 @@ function resetBoard() {
     lockBoard = false;
 }
 
-// Função para iniciar o temporizador
 function startTimer() {
     timerInterval = setInterval(() => {
-        const currentTime = Date.now();
-        const elapsedTime = currentTime - startTime;
-
+        const elapsedTime = Date.now() - startTime;
         const minutes = Math.floor(elapsedTime / 60000);
         const seconds = Math.floor((elapsedTime % 60000) / 1000);
 
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-        const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-
-        timerElement.textContent = `Tempo: ${formattedMinutes}:${formattedSeconds}`;
-    }, 1000); // Atualiza a cada segundo
+        timerElement.textContent = `Tempo: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
 }
 
-// Função para calcular os pontos com base no tempo
+function resetTimer() {
+    startTime = null;
+    clearInterval(timerInterval);
+    timerElement.textContent = 'Tempo: 00:00';
+}
+
+form.addEventListener('submit', function(e) {
+    // Impede o envio do form para que não ocorra um refresh da página
+    e.preventDefault();
+
+    // Captura o nome do campo de input
+    var nome = ipname.value;
+
+    if (nome.trim() !== '') {
+        // O nome foi inserido corretamente, então podemos fechar o modal de início
+        Startmodal.style.display = 'none';
+
+        // Agora o jogo pode começar
+        createBoard();
+    } else {
+        alert('Por favor, insira um nome para começar o jogo.');
+    }
+});
+
+
 function calculatePoints(totalTime) {
-    const seconds = totalTime / 1000; // Tempo total em segundos
+    const seconds = totalTime / 1000;
     let multiplier = 1;
 
     if (seconds <= 10) {
@@ -147,13 +174,15 @@ function calculatePoints(totalTime) {
     }
 
     const finalPoints = basePoints * multiplier;
-    saveScore(finalPoints, seconds);
+    const nome = campo.value;
+    
+    saveScore(finalPoints, seconds, nome);
 }
 
-// Função para salvar a pontuação no localStorage
-function saveScore(points, time) {
+function saveScore(points, time, nome) {
     const scores = JSON.parse(localStorage.getItem('ranking')) || [];
     const newScore = {
+        nome: nome,
         theme: theme,
         points: points,
         time: time.toFixed(2) + 's'
@@ -162,19 +191,20 @@ function saveScore(points, time) {
     localStorage.setItem('ranking', JSON.stringify(scores));
 }
 
-// Função para exibir o modal de vitória
 function showWinModal() {
     modal.style.display = 'flex';
 }
 
-// Event listeners para os botões do modal
+function showStartModal() {
+    Startmodal.style.display = 'flex';
+}
+
 menuBtn.addEventListener('click', () => {
-    window.location.href = '../../../index.html'; // Redireciona para o menu principal
+    window.location.href = '../../../index.html';
 });
 
 rankingBtn.addEventListener('click', () => {
-    window.location.href = '../rank/rank.html'; // Redireciona para a página de ranking
+    window.location.href = '../rank/rank.html';
 });
 
-// Inicia o jogo quando a página é carregada
 startGame();
