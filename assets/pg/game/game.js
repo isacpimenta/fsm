@@ -46,7 +46,8 @@ function createBoard() {
     imagePaths.forEach((image, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
-        card.dataset.image = image;
+        // Definir o caminho completo da imagem diretamente no dataset
+        card.dataset.image = `../../img/${theme}/${image}.png`;
         card.addEventListener('click', flipCard);
         board.appendChild(card);
     });
@@ -54,34 +55,30 @@ function createBoard() {
 
 function loadImages() {
     const themeImages = {
-        'AMOR E MITOLOGIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'PRE-HISTORIA E IDADE ANTIGA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'IDADE MÉDIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'IDADE MODERNA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'SOCIEDADE DE CONSUMO': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
-        'AMORES LIQUIDOS': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
+        'AMOREMITOLOGIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'PREHISTORIAEIDADEANTIGA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADEMÉDIA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'IDADEMODERNA': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'SOCIEDADEDECONSUMO': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6'],
+        'AMORESLIQUIDOS': ['card1', 'card2', 'card3', 'card4', 'card5', 'card6']
     };
 
-    // Normaliza o nome do tema removendo espaços e acentos
-    const normalizedTheme = theme
-        .toUpperCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s/g, "");
-
+    // Verifique se as imagens para o tema estão definidas corretamente
     const images = themeImages[theme] || [];
 
+    // Limpar a lista de imagePaths para garantir que as imagens corretas sejam carregadas
     imagePaths = [];
 
     images.forEach(image => {
-        // Aqui usamos o tema normalizado para construir o caminho das imagens
-        imagePaths.push(`../../img/${normalizedTheme}/${image}.png`, `../../img/${normalizedTheme}/${image}.png`);
+        // Agora, adicione o caminho completo das imagens
+        imagePaths.push(`${image}`, `${image}`);
     });
 
-    console.log('Imagens carregadas:', imagePaths);
-
+    // Embaralhar as cartas
     imagePaths.sort(() => Math.random() - 0.5);
 }
+
+
 
 function flipCard() {
     if (lockBoard || this === firstCard || this.classList.contains('flipped')) return;
